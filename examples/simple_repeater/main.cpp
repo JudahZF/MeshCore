@@ -186,6 +186,9 @@ void loop() {
 #endif
 
   the_mesh.loop();
+#ifdef ACTIVITY_LED_PIN
+  the_mesh.serviceActivityLed();
+#endif
   sensors.loop();
 #ifdef DISPLAY_CLASS
   ui_task.loop();

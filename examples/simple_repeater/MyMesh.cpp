@@ -468,6 +468,9 @@ const char *MyMesh::getLogDateTime() {
 }
 
 void MyMesh::logRxRaw(float snr, float rssi, const uint8_t raw[], int len) {
+#ifdef ACTIVITY_LED_PIN
+  pulseActivityLed();
+#endif
 #if MESH_PACKET_LOGGING
   Serial.print(getLogDateTime());
   Serial.print(" RAW: ");
@@ -475,6 +478,20 @@ void MyMesh::logRxRaw(float snr, float rssi, const uint8_t raw[], int len) {
   Serial.println();
 #endif
 }
+
+#ifdef ACTIVITY_LED_PIN
+void MyMesh::pulseActivityLed() {
+  digitalWrite(ACTIVITY_LED_PIN, HIGH);
+  activity_led_off_at = futureMillis(ACTIVITY_LED_ON_MILLIS);
+}
+
+void MyMesh::serviceActivityLed() {
+  if (activity_led_off_at != 0 && millisHasNowPassed(activity_led_off_at)) {
+    digitalWrite(ACTIVITY_LED_PIN, LOW);
+    activity_led_off_at = 0;
+  }
+}
+#endif
 
 void MyMesh::logRx(mesh::Packet *pkt, int len, float score) {
 #ifdef WITH_BRIDGE
@@ -881,6 +898,9 @@ MyMesh::MyMesh(mesh::MainBoard &board, mesh::Radio &radio, mesh::MillisecondCloc
   _logging = false;
   region_load_active = false;
   recv_pkt_region = NULL;
+#ifdef ACTIVITY_LED_PIN
+  activity_led_off_at = 0;
+#endif
 
 #if MAX_NEIGHBOURS
   memset(neighbours, 0, sizeof(neighbours));
@@ -943,6 +963,10 @@ MyMesh::MyMesh(mesh::MainBoard &board, mesh::Radio &radio, mesh::MillisecondCloc
 void MyMesh::begin(FILESYSTEM *fs) {
   mesh::Mesh::begin();
   _fs = fs;
+#ifdef ACTIVITY_LED_PIN
+  pinMode(ACTIVITY_LED_PIN, OUTPUT);
+  digitalWrite(ACTIVITY_LED_PIN, LOW);
+#endif
   // load persisted prefs
   _cli.loadPrefs(_fs);
   acl.load(_fs, self_id);

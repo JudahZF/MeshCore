@@ -104,6 +104,11 @@ class MyMesh : public mesh::Mesh, public CommonCLICallbacks {
   unsigned long pending_discover_until;
   bool region_load_active;
   unsigned long dirty_contacts_expiry;
+#ifdef ACTIVITY_LED_PIN
+  unsigned long activity_led_off_at;
+
+  void pulseActivityLed();
+#endif
 #if MAX_NEIGHBOURS
   NeighbourInfo neighbours[MAX_NEIGHBOURS];
 #endif
@@ -183,6 +188,9 @@ public:
   MyMesh(mesh::MainBoard& board, mesh::Radio& radio, mesh::MillisecondClock& ms, mesh::RNG& rng, mesh::RTCClock& rtc, mesh::MeshTables& tables);
 
   void begin(FILESYSTEM* fs);
+#ifdef ACTIVITY_LED_PIN
+  void serviceActivityLed();
+#endif
   void sendNodeDiscoverReq();
   const char* getFirmwareVer() override { return FIRMWARE_VERSION; }
   const char* getBuildDate() override { return FIRMWARE_BUILD_DATE; }

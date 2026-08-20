@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>The Internet — Heltec V3 Activity Light Plan</title>
+  <style>
+    :root {
+      --paper: #f2ead8;
+      --paper-2: #fffaf0;
+      --ink: #201d17;
+      --muted: #686052;
+      --line: #c7b99e;
+      --cube: #171717;
+      --cube-2: #2b2a27;
+      --red: #d82d2d;
+      --red-hot: #ff4b3e;
+      --green: #196e46;
+      --amber: #a45b00;
+      --blue: #2c5e84;
+      --shadow: rgba(52, 40, 19, .16);
+      --code-bg: #191b19;
+      --code-ink: #e4f3df;
+      --radius: 18px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #11100e;
+        --paper-2: #191714;
+        --ink: #eee6d6;
+        --muted: #bdb3a0;
+        --line: #4d4539;
+        --cube: #050505;
+        --cube-2: #24221f;
+        --red: #f1443b;
+        --red-hot: #ff665c;
+        --green: #6fc79b;
+        --amber: #e7a84d;
+        --blue: #83b4d7;
+        --shadow: rgba(0, 0, 0, .45);
+        --code-bg: #0a0b0a;
+        --code-ink: #d6f2d0;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(116, 91, 46, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(116, 91, 46, .055) 1px, transparent 1px),
+        var(--paper);
+      background-size: 24px 24px;
+      font-family: Charter, "Bitstream Charter", Georgia, serif;
+      line-height: 1.58;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+      z-index: 20;
+    }
+
+    a { color: var(--blue); text-underline-offset: 3px; }
+    code, pre, .eyebrow, .tag, .status, .toc, dt, summary::before {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .shell { width: min(1160px, calc(100% - 36px)); margin: 0 auto; }
+
+    header {
+      min-height: 68vh;
+      display: grid;
+      align-items: center;
+      padding: 70px 0 48px;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
+      gap: clamp(30px, 7vw, 92px);
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: var(--green);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before { content: ""; width: 34px; border-top: 2px solid currentColor; }
+
+    h1, h2, h3 { font-family: Rockwell, "Roboto Slab", Georgia, serif; line-height: 1.04; }
+    h1 { max-width: 760px; margin: 0; font-size: clamp(3rem, 8vw, 7.6rem); letter-spacing: -.065em; }
+    h1 em { color: var(--red); font-style: normal; }
+    .lede { max-width: 700px; margin: 28px 0 0; font-size: clamp(1.08rem, 2vw, 1.42rem); color: var(--muted); }
+
+    .verdict {
+      margin-top: 34px;
+      padding: 18px 20px;
+      max-width: 720px;
+      border-left: 5px solid var(--green);
+      background: color-mix(in srgb, var(--paper-2) 88%, transparent);
+      box-shadow: 0 12px 36px var(--shadow);
+    }
+
+    .verdict strong { display: block; font-size: 1.05rem; }
+    .verdict span { color: var(--muted); }
+
+    .internet-prop {
+      position: relative;
+      aspect-ratio: 1 / 1.08;
+      display: grid;
+      place-items: center;
+      filter: drop-shadow(0 28px 30px var(--shadow));
+    }
+
+    .internet-prop::after {
+      content: "Property of the Elders";
+      position: absolute;
+      bottom: 4%;
+      padding: 7px 12px;
+      color: #29251d;
+      background: #e6d5aa;
+      border: 1px solid #a58e5d;
+      font: 700 .65rem/1.1 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .06em;
+      transform: rotate(-2deg);
+      box-shadow: 0 2px 8px #0004;
+    }
+
+    .cube {
+      width: 70%;
+      aspect-ratio: 1;
+      position: relative;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #333 0%, var(--cube) 42%, #050505 100%);
+      border: 2px solid #484540;
+      box-shadow: inset 15px 15px 28px #ffffff0b, inset -18px -20px 30px #000c, 0 28px 60px #0006;
+      transform: perspective(900px) rotateX(6deg) rotateY(-9deg);
+    }
+
+    .cube::before {
+      content: "";
+      position: absolute;
+      inset: 9%;
+      border: 1px dashed #ffffff20;
+      border-radius: 5px;
+    }
+
+    .lamp {
+      position: absolute;
+      top: 16%;
+      left: 50%;
+      width: 18px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--red-hot);
+      border: 3px solid #5d0804;
+      box-shadow: 0 0 8px var(--red-hot), 0 0 26px color-mix(in srgb, var(--red-hot) 85%, transparent), 0 0 54px color-mix(in srgb, var(--red-hot) 45%, transparent);
+      animation: packet-demo 6s steps(1, end) infinite;
+    }
+
+    .cable { position: absolute; width: 2px; height: 21%; bottom: -21%; left: 50%; background: #222; }
+
+    @keyframes packet-demo {
+      0%, 33% { opacity: 1; transform: scale(1.12); }
+      33.1%, 100% { opacity: .17; transform: scale(.92); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .lamp { animation: none; }
+    }
+
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: color-mix(in srgb, var(--paper) 90%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc .shell { display: flex; gap: 25px; overflow-x: auto; padding-block: 12px; }
+    .toc a { color: var(--muted); text-decoration: none; white-space: nowrap; font-size: .76rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .toc a:hover { color: var(--red); }
+
+    main { padding: 80px 0 100px; }
+    section { margin-bottom: 100px; scroll-margin-top: 70px; }
+    .section-head { display: grid; grid-template-columns: 140px 1fr; gap: 28px; align-items: start; margin-bottom: 34px; }
+    .section-no { color: var(--red); font: 800 .78rem/1 "SFMono-Regular", Consolas, monospace; letter-spacing: .12em; }
+    h2 { margin: 0 0 12px; font-size: clamp(2rem, 4.4vw, 4.2rem); letter-spacing: -.045em; }
+    .section-head p { max-width: 730px; margin: 0; color: var(--muted); font-size: 1.08rem; }
+
+    .evidence-grid, .cards, .acceptance-grid { display: grid; gap: 18px; }
+    .evidence-grid { grid-template-columns: repeat(3, 1fr); }
+    .cards { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+    .acceptance-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .evidence, .card, .acceptance {
+      position: relative;
+      padding: 24px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .evidence .tag, .card .tag {
+      display: inline-block;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .evidence h3, .card h3 { margin: 0 0 9px; font-size: 1.35rem; }
+    .evidence p, .card p { margin: 0; color: var(--muted); }
+    .evidence code { display: block; margin-top: 18px; color: var(--green); font-size: .76rem; overflow-wrap: anywhere; }
+
+    .card { display: flex; flex-direction: column; }
+    .card.recommended { border: 2px solid var(--green); transform: translateY(-10px); }
+    .card.recommended::after {
+      content: "RECOMMENDED";
+      position: absolute;
+      top: -13px;
+      right: 18px;
+      padding: 5px 9px;
+      color: var(--paper-2);
+      background: var(--green);
+      border-radius: 99px;
+      font: 800 .62rem/1 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .08em;
+    }
+
+    .card ul { margin: 18px 0 0; padding-left: 20px; color: var(--muted); }
+    .card .effort { margin-top: auto; padding-top: 22px; color: var(--ink); font-weight: 700; }
+    .card .effort::before { content: "Effort  "; color: var(--red); font-family: "SFMono-Regular", Consolas, monospace; font-size: .7rem; text-transform: uppercase; }
+
+    .flow {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-2);
+      box-shadow: 0 16px 50px var(--shadow);
+      overflow-x: auto;
+    }
+    .flow svg { display: block; width: 100%; min-width: 760px; height: auto; }
+    .flow .box { fill: color-mix(in srgb, var(--paper-2) 90%, var(--green)); stroke: var(--line); stroke-width: 1.5; }
+    .flow .box-hot { fill: color-mix(in srgb, var(--paper-2) 80%, var(--red)); stroke: var(--red); stroke-width: 2; }
+    .flow .wire { fill: none; stroke: var(--muted); stroke-width: 2; marker-end: url(#arrow); }
+    .flow text { fill: var(--ink); font-family: "SFMono-Regular", Consolas, monospace; font-size: 13px; }
+    .flow .minor { fill: var(--muted); font-size: 11px; }
+
+    .rule {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 26px;
+      margin-top: 26px;
+      padding: 28px;
+      background: var(--cube);
+      color: #f1eadc;
+      border-radius: var(--radius);
+      box-shadow: 0 18px 55px #0005;
+    }
+    .rule h3 { margin: 0; font-size: 1.8rem; color: #fff5e4; }
+    .rule p { margin: 0; color: #c7c0b5; }
+    .rule code { color: #90e3aa; }
+
+    .phases { display: grid; gap: 14px; }
+    details {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: clip;
+      box-shadow: 0 7px 22px var(--shadow);
+    }
+    summary { position: relative; cursor: pointer; list-style: none; padding: 22px 56px 22px 74px; font-weight: 800; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: attr(data-step); position: absolute; left: 22px; top: 23px; color: var(--red); font-size: .72rem; }
+    summary::after { content: "+"; position: absolute; right: 24px; top: 14px; color: var(--muted); font: 300 2rem/1 Georgia, serif; }
+    details[open] summary::after { content: "−"; }
+    summary span { display: block; margin-top: 4px; color: var(--muted); font-weight: 400; font-size: .92rem; }
+    .detail-body { padding: 0 30px 26px 74px; border-top: 1px solid var(--line); }
+    .detail-body ul { padding-left: 20px; }
+
+    pre {
+      margin: 20px 0 0;
+      padding: 20px;
+      overflow-x: auto;
+      color: var(--code-ink);
+      background: var(--code-bg);
+      border-radius: 10px;
+      font-size: .82rem;
+      line-height: 1.6;
+    }
+
+    .file-map { width: 100%; border-collapse: collapse; background: var(--paper-2); border: 1px solid var(--line); }
+    .file-map th, .file-map td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .file-map th { color: var(--muted); font: 800 .68rem/1.2 "SFMono-Regular", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .file-map td:first-child { width: 38%; font-family: "SFMono-Regular", Consolas, monospace; font-size: .78rem; color: var(--green); overflow-wrap: anywhere; }
+    .file-map tr:last-child td { border-bottom: 0; }
+
+    .acceptance { display: grid; grid-template-columns: 42px 1fr; gap: 13px; align-items: start; }
+    .check { width: 34px; height: 34px; display: grid; place-items: center; color: var(--green); border: 2px solid currentColor; border-radius: 50%; font-weight: 900; }
+    .acceptance h3 { margin: 2px 0 5px; font-size: 1.05rem; }
+    .acceptance p { margin: 0; color: var(--muted); font-size: .93rem; }
+
+    .risks { display: grid; grid-template-columns: .8fr 1.2fr; gap: 26px; }
+    .risks dl { margin: 0; }
+    .risks dt { margin-top: 18px; color: var(--amber); font-weight: 800; font-size: .8rem; text-transform: uppercase; }
+    .risks dt:first-child { margin-top: 0; }
+    .risks dd { margin: 4px 0 0; color: var(--muted); }
+    .physical {
+      padding: 30px;
+      background: color-mix(in srgb, var(--paper-2) 82%, var(--amber));
+      border: 1px solid var(--amber);
+      border-radius: var(--radius);
+    }
+    .physical h3 { margin: 0 0 14px; font-size: 1.6rem; }
+    .physical ul { margin: 0; padding-left: 20px; }
+
+    .decision {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: clamp(28px, 5vw, 52px);
+      background: var(--cube);
+      color: #f6ecdc;
+      border-radius: 22px;
+      box-shadow: 0 25px 70px #0006;
+    }
+    .decision .big-led { width: 72px; aspect-ratio: 1; border-radius: 50%; background: var(--red-hot); box-shadow: 0 0 34px var(--red-hot); }
+    .decision h2 { margin: 0 0 12px; color: #fff4df; }
+    .decision p { margin: 0; color: #c9c0b1; font-size: 1.08rem; }
+
+    footer { padding: 30px 0 60px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+    footer .shell { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+
+    @media (max-width: 860px) {
+      header { min-height: auto; }
+      .hero, .rule, .risks { grid-template-columns: 1fr; }
+      .internet-prop { width: min(420px, 90%); margin: 0 auto; }
+      .evidence-grid, .cards { grid-template-columns: 1fr; }
+      .card.recommended { transform: none; }
+      .section-head { grid-template-columns: 1fr; gap: 10px; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 24px, 1160px); }
+      header { padding-top: 45px; }
+      main { padding-top: 55px; }
+      section { margin-bottom: 75px; }
+      .acceptance-grid { grid-template-columns: 1fr; }
+      .detail-body { padding-left: 24px; }
+      summary { padding-left: 58px; }
+      summary::before { left: 16px; }
+      .decision { grid-template-columns: 1fr; }
+      .file-map { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell hero">
+      <div>
+        <p class="eyebrow">MeshCore implementation plan · 19 August 2026</p>
+        <h1>Put MeshCore inside <em>the Internet.</em></h1>
+        <p class="lede">A Heltec V3 repeater hidden in the sacred black box, with one external light that turns on for two seconds whenever the radio hears a packet.</p>
+        <div class="verdict">
+          <strong>Verdict: use an external LED on GPIO 7 and a small, opt-in firmware customization.</strong>
+          <span>The new lamp turns on for two seconds only when the radio receives a packet, never when this node sends. A later packet restarts the two-second timer.</span>
+        </div>
+      </div>
+      <div class="internet-prop" aria-label="Stylised black Internet box with a blinking red light">
+        <div class="cube">
+          <span class="lamp"></span>
+          <span class="cable"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Plan sections">
+    <div class="shell">
+      <a href="#finding">Finding</a>
+      <a href="#options">Options</a>
+      <a href="#design">Design</a>
+      <a href="#implementation">Implementation</a>
+      <a href="#verification">Verification</a>
+      <a href="#risks">Practical notes</a>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section id="finding">
+      <div class="section-head">
+        <span class="section-no">01 / WHAT EXISTS</span>
+        <div>
+          <h2>Most of the plumbing is already here.</h2>
+          <p>The Heltec V3 pin map, an unused exposed GPIO, and a pre-parse receive callback are all present. The implementation adds a non-blocking external-light timer behind a dedicated build flag.</p>
+        </div>
+      </div>
+
+      <div class="evidence-grid">
+        <article class="evidence">
+          <span class="tag">Available external output</span>
+          <h3>GPIO 7 is exposed and unused</h3>
+          <p>Heltec exposes GPIO 7 as J3 pin 18. MeshCore's V3 target does not assign it to the radio, OLED, battery monitor, GPS, or controls.</p>
+          <code><a href="https://resource.heltec.cn/download/WiFi_LoRa_32_V3/HTIT-WB32LA_V3.2.pdf">Heltec V3 datasheet · table 2.2-2</a></code>
+        </article>
+        <article class="evidence">
+          <span class="tag">Existing stock behaviour</span>
+          <h3>TX remains separate</h3>
+          <p>The ESP32 board layer can continue driving the hidden onboard LED on GPIO 35. The external lamp gets a different pin and is never touched by TX callbacks.</p>
+          <code>src/helpers/ESP32Board.h:115–121</code>
+        </article>
+        <article class="evidence">
+          <span class="tag">Existing extension point</span>
+          <h3>Raw RX is already observable</h3>
+          <p><code>logRxRaw()</code> runs immediately after RadioLib accepts a packet and before MeshCore parsing or flood delay. It is independent of the send path.</p>
+          <code>src/Dispatcher.cpp:191–205</code>
+        </article>
+      </div>
+    </section>
+
+    <section id="options">
+      <div class="section-head">
+        <span class="section-no">02 / CHOICE</span>
+        <div>
+          <h2>Three ways to make it blink.</h2>
+          <p>A separate lamp is the cleanest way to guarantee that visible activity means “heard,” not “sent.” GPIO 7 is the proposed default, but the build flag keeps it easy to change.</p>
+        </div>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <span class="tag">Option A · no code</span>
+          <h3>Stock repeater</h3>
+          <p>Use the onboard GPIO 35 LED, which indicates transmissions rather than received packets.</p>
+          <ul>
+            <li>No firmware maintenance</li>
+            <li>Does not drive an external GPIO 7 LED</li>
+            <li>Does not meet the receive-only requirement</li>
+          </ul>
+          <p class="effort">About 15 minutes, but wrong signal</p>
+        </article>
+
+        <article class="card recommended">
+          <span class="tag">Option B · dedicated target</span>
+          <h3>Two-second external RX lamp</h3>
+          <p>Add a small opt-in activity mode and a <code>Heltec_v3_the_internet</code> build environment, with the lamp on GPIO 7.</p>
+          <ul>
+            <li>On for two seconds after every CRC-valid LoRa packet—not TX</li>
+            <li>Later packets restart the two-second countdown</li>
+            <li>No dummy packets and no network airtime cost</li>
+          </ul>
+          <p class="effort">Roughly 1–2 hours including bench test</p>
+        </article>
+
+        <article class="card">
+          <span class="tag">Option C · dual indication</span>
+          <h3>Two external LEDs</h3>
+          <p>Use separate GPIOs and colours for receive and transmit while leaving the onboard TX light hidden.</p>
+          <ul>
+            <li>Packet meaning is completely unambiguous</li>
+            <li>More visually elaborate than the original prop</li>
+            <li>Adds a second output, resistor, and aperture</li>
+          </ul>
+          <p class="effort">About 2–3 hours plus fabrication</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="design">
+      <div class="section-head">
+        <span class="section-no">03 / DESIGN</span>
+        <div>
+          <h2>A dedicated lamp for receive.</h2>
+          <p>The external activity controller alone owns GPIO 7. Stock transmit callbacks remain on the onboard GPIO 35 LED, so sending cannot start, extend, shorten, or cancel the visible external pulse.</p>
+        </div>
+      </div>
+
+      <div class="flow" role="img" aria-label="A received radio packet starts a non-blocking two-second external LED timer while transmit events are ignored">
+        <svg viewBox="0 0 1060 310" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+          <rect class="box" x="30" y="45" width="205" height="82" rx="12"/>
+          <text x="52" y="78">SX1262 receives frame</text>
+          <text class="minor" x="52" y="102">CRC accepted by RadioLib</text>
+
+          <rect class="box" x="30" y="182" width="205" height="82" rx="12"/>
+          <text x="52" y="215">Local TX starts</text>
+          <text class="minor" x="52" y="239">no activity-lamp callback</text>
+
+          <path class="wire" d="M235 86 C315 86 315 116 390 116"/>
+
+          <rect class="box" x="390" y="82" width="236" height="122" rx="12"/>
+          <text x="414" y="117">Activity timing state</text>
+          <text class="minor" x="414" y="145">set deadline = now + 2000 ms</text>
+          <text class="minor" x="414" y="169">later RX replaces deadline</text>
+          <text class="minor" x="414" y="190">millis()-safe; never delay()</text>
+
+          <path class="wire" d="M626 143 L774 143"/>
+
+          <rect class="box-hot" x="774" y="95" width="252" height="96" rx="12"/>
+          <text x="800" y="132">GPIO 7 external lamp</text>
+          <text class="minor" x="800" y="158">HIGH until current deadline</text>
+
+          <path class="wire" d="M508 204 L508 268 L130 268 L130 127"/>
+          <text class="minor" x="318" y="290">another received packet restarts the timer</text>
+        </svg>
+      </div>
+
+      <div class="rule">
+        <h3>TX does not enter this path.</h3>
+        <p>Only <code>logRxRaw()</code> can extend the GPIO 7 lamp deadline. It is never called from <code>logTx()</code>, <code>onBeforeTransmit()</code>, or <code>onAfterTransmit()</code>.</p>
+      </div>
+    </section>
+
+    <section id="implementation">
+      <div class="section-head">
+        <span class="section-no">04 / IMPLEMENT</span>
+        <div>
+          <h2>A deliberately small change.</h2>
+          <p>Keep the default repeater untouched. The behaviour exists only when activity-light build flags are present, so other boards and release targets retain their current semantics.</p>
+        </div>
+      </div>
+
+      <div class="phases">
+        <details open>
+          <summary data-step="01">Add an opt-in Heltec build environment<span>Create <code>Heltec_v3_the_internet</code> beside the existing repeater target.</span></summary>
+          <div class="detail-body">
+            <ul>
+              <li>Reuse the Heltec V3 radio, display, and simple-repeater source filters.</li>
+              <li>Set the default advert name to <code>"The Internet"</code>.</li>
+              <li>Leave <code>P_LORA_TX_LED=35</code> unchanged for the onboard TX indicator. Define the separate external output as <code>ACTIVITY_LED_PIN=7</code> with <code>ACTIVITY_LED_ON_MILLIS=2000</code>.</li>
+              <li>Keep timing values compile-time constants; no new persisted preferences or CLI surface are needed for a joke prop.</li>
+            </ul>
+            <pre><code>[env:Heltec_v3_the_internet]
+extends = Heltec_lora32_v3
+build_flags =
+  ${Heltec_lora32_v3.build_flags}
+  -D ACTIVITY_LED_PIN=7
+  -D ACTIVITY_LED_ON_MILLIS=2000
+  -D ADVERT_NAME='"The Internet"'
+  # same repeater flags/source filters as Heltec_v3_repeater</code></pre>
+          </div>
+        </details>
+
+        <details>
+          <summary data-step="02">Add non-blocking activity timing to the repeater<span>Guard every addition with <code>ACTIVITY_LED_PIN</code>.</span></summary>
+          <div class="detail-body">
+            <ul>
+              <li>Store a single LED-off deadline on <code>MyMesh</code>.</li>
+              <li>Initialise GPIO 7 low during repeater startup.</li>
+              <li>Service the light once per main loop; never call <code>delay()</code>.</li>
+              <li>Use wrap-safe unsigned time comparisons and extend—not replace—the current deadline when events overlap.</li>
+              <li>Expose one focused <code>loopActivityLed()</code> method if needed; avoid a generic indicator framework.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary data-step="03">Trigger the pulse at the right receive boundary<span>Use the existing <code>logRxRaw()</code> override.</span></summary>
+          <div class="detail-body">
+            <ul>
+              <li>Start the two-second pulse before the existing <code>MESH_PACKET_LOGGING</code> conditional.</li>
+              <li>This represents “heard a packet” as a complete LoRa frame that passed the radio's read/CRC checks.</li>
+              <li>Do not use <code>onRecvPacket()</code>: flood-score scheduling may delay that callback, and it excludes frames that fail MeshCore parsing.</li>
+              <li>Do not add any pulse call to <code>logTx()</code> or the board's transmit hooks. A local send must not illuminate the external LED.</li>
+              <li>Corrupt/noise events remain unlit by design. Showing all channel energy would require a different lower-level RSSI/CAD feature and is outside this joke.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary data-step="04">Build, flash, and configure<span>Produce a normal ESP32-S3 binary and set legal regional radio parameters.</span></summary>
+          <div class="detail-body">
+            <pre><code>pio run -e Heltec_v3_the_internet
+pio run -t upload -e Heltec_v3_the_internet</code></pre>
+            <ul>
+              <li>On first boot, use the MeshCore console/configurator to select the correct legal frequency preset and change the default admin password.</li>
+              <li>Leave power saving off so the main loop services the two-second deadline promptly.</li>
+              <li>The repeater can still participate normally in MeshCore; the receive light is purely local.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <table class="file-map" aria-label="Expected file changes">
+        <thead>
+          <tr><th>File</th><th>Planned change</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>variants/heltec_v3/platformio.ini</td><td>Add the dedicated target and declare GPIO 7 plus the two activity timing constants. Keep onboard TX on GPIO 35 unchanged.</td></tr>
+          <tr><td>examples/simple_repeater/MyMesh.h</td><td>Add guarded timing state plus one receive-pulse/service method declaration.</td></tr>
+          <tr><td>examples/simple_repeater/MyMesh.cpp</td><td>Initialise/service the output and trigger the RX pulse inside <code>logRxRaw()</code>.</td></tr>
+          <tr><td>examples/simple_repeater/main.cpp</td><td>Call the activity-light service from the existing main loop if it is not folded into the repeater's loop path.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="verification">
+      <div class="section-head">
+        <span class="section-no">05 / VERIFY</span>
+        <div>
+          <h2>Bench checks with visible outcomes.</h2>
+          <p>This is hardware-timing behaviour, so a focused build check plus a short two-radio bench test is more valuable than a large unit-test scaffold.</p>
+        </div>
+      </div>
+
+      <div class="acceptance-grid">
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>Target builds cleanly</h3><p><code>pio run -e Heltec_v3_the_internet</code> succeeds without changing the stock <code>Heltec_v3_repeater</code> output.</p></div>
+        </article>
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>Two-second deadline</h3><p>After a single received frame, GPIO 7 stays high for 2.0 s ± one normal loop iteration, then returns low.</p></div>
+        </article>
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>Every accepted frame pulses</h3><p>Send direct, flood, and duplicate packets from a second node; each radio receipt produces an immediate visible pulse.</p></div>
+        </article>
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>Local TX does not pulse</h3><p>Trigger a self-advertisement with no incoming traffic; the external GPIO 7 LED remains dark throughout the transmission.</p></div>
+        </article>
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>Traffic still flows</h3><p>Confirm the device advertises, receives, and forwards as a repeater while the light is active.</p></div>
+        </article>
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>Retrigger is stable</h3><p>A packet arriving while the lamp is on restarts the deadline, keeping it lit until two seconds after the newest packet.</p></div>
+        </article>
+        <article class="acceptance">
+          <span class="check">✓</span>
+          <div><h3>No delay-based stalls</h3><p>Dense packet traffic does not block the mesh loop, serial console, display refresh, or watchdog servicing.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="risks">
+      <div class="section-head">
+        <span class="section-no">06 / PRACTICAL</span>
+        <div>
+          <h2>Firmware is the easy bit.</h2>
+          <p>The enclosure and radio placement will decide whether the result feels like a prop or a small electronics project trapped in a box.</p>
+        </div>
+      </div>
+
+      <div class="risks">
+        <dl>
+          <dt>LED ownership</dt>
+          <dd>Keep the external activity lamp on GPIO 7. GPIO 35 remains the onboard TX light; the two paths must not be aliased to the same pin.</dd>
+          <dt>Power saving</dt>
+          <dd>Light/deep sleep can stretch local timer behaviour. For a USB-powered desk prop, keep power saving disabled.</dd>
+          <dt>Busy mesh</dt>
+          <dd>In a dense area the lamp may look almost solid. If that happens, shorten RX pulses or add a short minimum-dark interval after bench testing.</dd>
+          <dt>Regional settings</dt>
+          <dd>A repeater is a real transmitter. Configure the legal frequency/preset and avoid unnecessary TX power indoors.</dd>
+        </dl>
+
+        <aside class="physical">
+          <h3>Prop checklist</h3>
+          <ul>
+            <li>Wire <strong>GPIO 7 → 330 Ω resistor → LED anode</strong>, then <strong>LED cathode → GND</strong>. GPIO 7 is J3 pin 18 on the Heltec V3 header.</li>
+            <li>Use a diffused red LED and mount it directly behind a drilled aperture or translucent insert; do not drive an LED directly without a series resistor.</li>
+            <li>Keep the antenna outside the box, or build the shell from RF-transparent plastic; do not bury it behind metal foil or a battery.</li>
+            <li>Leave access to USB-C, reset/boot controls, and enough ventilation for continuous powered use.</li>
+            <li>Add strain relief so lifting “the Internet” by its cable does not tear the Heltec connector off the board.</li>
+            <li>If the LED is too dim, reduce the resistor toward 220 Ω within the LED's rating; do not make firmware pulses excessively long.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="decision">
+      <div class="big-led" aria-hidden="true"></div>
+      <div>
+        <h2>Recommended next move</h2>
+        <p>Build the dedicated <code>Heltec_v3_the_internet</code> target, wire a diffused external LED to GPIO 7 through 330 Ω, and trigger it only from <code>logRxRaw()</code>. Each accepted radio packet turns it on for two seconds; no traffic means no light.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <span>Prepared for Judah · MeshCore v1.17.1 worktree</span>
+      <span>Scope: plan only—no firmware behaviour changed</span>
+    </div>
+  </footer>
+</body>
+</html>
